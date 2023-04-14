@@ -2,7 +2,7 @@ import React from 'react';
 import css from './modal.module.css';
 import PropTypes from 'prop-types';
 
-const Modal = (largeImage, tags, onClick) => {
+const Modal = ({ largeImage, tags, onClick }) => {
   const setCloseModal = event => {
     const hasClass = event.target.classList.contains(css.Overlay);
     if (hasClass) {
