@@ -13,14 +13,15 @@ const App = () => {
   const [error, setError] = useState(null);
   const [modalContent, setModalContent] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [page, setPage] = useState(1);
 
-  let page = 1;
-
-  const getImagesData = async inputValue => {
+  const getImagesData = async (query, queryPage, append = true) => {
     setIsLoading(true);
     try {
-      let moreImages = await fetchImagesWithQuery(inputValue, page);
-      moreImages = images.concat(moreImages);
+      let moreImages = await fetchImagesWithQuery(query, queryPage);
+      if (append) {
+        moreImages = images.concat(moreImages);
+      }
       setImages(moreImages);
       setError(null);
     } catch (error) {
@@ -30,16 +31,16 @@ const App = () => {
     }
   };
 
-  const searchForImages = async inputValue => {
-    page = 1;
-    setImages([]);
-    setInputValue(inputValue);
-    getImagesData(inputValue);
+  const searchForImages = query => {
+    setPage(1);
+    setInputValue(query);
+    getImagesData(query, 1, false);
   };
 
-  const loadMore = async () => {
-    page = page + 1;
-    getImagesData(inputValue);
+  const loadMore = () => {
+    let currentPage = page + 1;
+    setPage(currentPage);
+    getImagesData(inputValue, currentPage);
   };
 
   const closeModal = () => {
